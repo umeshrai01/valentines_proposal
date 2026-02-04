@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Simran 💖</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  overflow:hidden;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  min-height:100vh;
+  display:flex;justify-content:center;align-items:center;
+}
+
+.hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+.heart{position:absolute;font-size:22px;animation:float 8s infinite ease-in-out;opacity:.6;}
+@keyframes float{
+  0%{transform:translateY(100vh) rotate(0);opacity:0}
+  15%{opacity:.7}
+  90%{opacity:.7}
+  100%{transform:translateY(-120px) rotate(360deg);opacity:0}
+}
+
+.container{
+  position:relative;z-index:2;text-align:center;
+  background:rgba(255,255,255,.96);
+  padding:55px 40px;border-radius:30px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  max-width:620px;width:92%;animation:fadeIn .9s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
+h1{color:#e91e63;font-size:2.4em;margin-bottom:35px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+.buttons-container{display:flex;justify-content:center;gap:25px;margin-top:35px;position:relative;min-height:90px;}
+
+.btn{
+  padding:18px 46px;font-size:1.4em;border:none;border-radius:15px;
+  cursor:pointer;font-weight:bold;transition:all .25s ease;
+  box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+.btn-yes{background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);color:white;}
+.btn-yes:hover{transform:scale(1.12);box-shadow:0 8px 25px rgba(67,233,123,.6);}
+
+.btn-no{
+  background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+  color:white;position:absolute;transition:all .14s ease-out;
+}
+
+.success-page{display:none;text-align:center;animation:cele 1s ease-out;}
+@keyframes cele{0%{opacity:0;transform:scale(.5) rotate(-180deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+
+.big-heart{font-size:5em;animation:beat 1.4s infinite;}
+@keyframes beat{0%,100%{transform:scale(1)}25%{transform:scale(1.25)}40%{transform:scale(1.1)}}
+
+.confetti{position:fixed;width:10px;height:10px;top:-10px;z-index:10;animation:fall 3s linear infinite;}
+@keyframes fall{to{transform:translateY(100vh) rotate(360deg)}}
+
+canvas{position:fixed;top:0;left:0;pointer-events:none;}
+
+.message-box{
+  background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);
+  padding:25px;border-radius:20px;margin-top:25px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic">
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_2b7c6f0c3a.mp3?filename=romantic-114624.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="fire"></canvas>
+<div class="hearts" id="hearts"></div>
+
+<div class="container" id="proposalPage">
+  <h1>Hello Simran, will you be my valentine? 💕</h1>
+  <div class="buttons-container">
+    <button class="btn btn-yes" onclick="acceptProposal()">Yes</button>
+    <button class="btn btn-no" id="noBtn">No</button>
+  </div>
+</div>
+
+<div class="container success-page" id="successPage">
+  <h1>Yayyyy! ✨</h1>
+  <div class="big-heart">❤️</div>
+  <div class="message-box">
+    <p><strong>You just made my day, Simran!</strong></p>
+    <p>I promise to make this Valentine's Day unforgettable! 🌹</p>
+    <p>Lots of love, laughter and sweet surprises are loading... 🎉</p>
+    <p style="margin-top:15px;color:#e91e63;"><em>Can't wait to celebrate with you! 💖</em></p>
+  </div>
+</div>
+
+<script>
+// Floating hearts
+const heartsContainer=document.getElementById('hearts');
+const symbols=['❤️','💕','💖','💗','💝','💘','💓'];
+function createHeart(){
+  const h=document.createElement('div');h.className='heart';
+  h.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  h.style.left=Math.random()*100+'%';
+  h.style.animationDuration=(Math.random()*5+5)+'s';
+  heartsContainer.appendChild(h);
+  setTimeout(()=>h.remove(),12000);
+}
+setInterval(createHeart,600);
+for(let i=0;i<18;i++)setTimeout(createHeart,i*300);
+
+// NO BUTTON LOGIC (extra funny + mobile friendly)
+const noBtn=document.getElementById('noBtn');
+let clicks=0,scale=1;
+
+function jumpNo(){
+  const c=document.querySelector('.buttons-container');
+  const cr=c.getBoundingClientRect();
+  const br=noBtn.getBoundingClientRect();
+
+  let x=Math.random()*(cr.width-br.width);
+  let y=Math.random()*(cr.height-br.height);
+
+  noBtn.style.left=x+'px';
+  noBtn.style.top=y+'px';
+  noBtn.style.transform=`rotate(${Math.random()*26-13}deg)`;
+}
+
+function mobileNo(e){
+  e.preventDefault();clicks++;
+  scale-=.12;if(scale<.32)scale=.32;
+  noBtn.style.scale=scale;
+
+  const txt=[
+   'Are you sure? 😢','Think again 🙄','No is illegal 🚫',
+   'Don’t break my heart 💔','Plzzz 🥺','I’ll cry 😭','Wrong button 😆'
+  ];
+  noBtn.innerText=txt[Math.floor(Math.random()*txt.length)];
+
+  jumpNo();
+}
+
+noBtn.addEventListener('mouseenter',jumpNo);
+noBtn.addEventListener('mouseover',jumpNo);
+noBtn.addEventListener('touchstart',mobileNo);
+noBtn.addEventListener('click',mobileNo);
+
+// ACCEPT
+function acceptProposal(){
+  document.getElementById('proposalPage').style.display='none';
+  document.getElementById('successPage').style.display='block';
+  document.getElementById('bgMusic').play();
+  createConfetti();startFireworks();
+}
+
+// CONFETTI
+function createConfetti(){
+  const colors=['#ff6b6b','#4ecdc4','#45b7d1','#f7dc6f','#bb8fce','#f8b500'];
+  for(let i=0;i<160;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');c.className='confetti';
+      c.style.left=Math.random()*100+'%';
+      c.style.background=colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration=(Math.random()*2+2)+'s';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),5000);
+    },i*20);
+  }
+}
+
+// FIREWORKS CANVAS
+const canvas=document.getElementById('fire');
+const ctx=canvas.getContext('2d');
+canvas.width=innerWidth;canvas.height=innerHeight;
+let parts=[];
+
+function boom(x,y){
+ for(let i=0;i<70;i++){
+  parts.push({
+   x,y,
+   vx:(Math.random()-0.5)*9,
+   vy:(Math.random()-0.5)*9,
+   size:Math.random()*4+2,
+   life:90
+  });
+ }
+}
+
+function startFireworks(){
+ setInterval(()=>boom(Math.random()*canvas.width,Math.random()*canvas.height),700);
+ requestAnimationFrame(draw);
+}
+
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ parts.forEach(p=>{
+  p.x+=p.vx;p.y+=p.vy;p.life--;
+  ctx.fillStyle=`hsl(${Math.random()*360},100%,65%)`;
+  ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
+ });
+ parts=parts.filter(p=>p.life>0);
+ requestAnimationFrame(draw);
+}
+
+window.onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;};
+</script>
+</body>
+</html>
