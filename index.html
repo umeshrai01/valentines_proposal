@@ -175,7 +175,7 @@ function jumpNo(){
 
   noBtn.style.left=x+'px';
   noBtn.style.top=y+'px';
-  noBtn.style.transform=`rotate(${Math.random()*26-13}deg)`;
+  noBtn.style.transform=`scale(${scale}) rotate(${Math.random()*26-13}deg)`;
 }
 
 function mobileNo(e){
@@ -186,14 +186,13 @@ function mobileNo(e){
   scale -= .12;
 
   // when too small → disappear forever 😆
-  if(scale <= .32){
-    noBtn.style.scale = .25;
-    noBtn.style.opacity = '0';
-    setTimeout(()=>{ noBtn.style.display='none'; },200);
-    return;
+  // never disappear – just keep getting tinier forever
+  if(scale <= .05){
+    scale = .05; // minimum visible size but still alive
   }
 
-  noBtn.style.scale = scale;
+  // apply shrink using transform so jumpNo doesn't reset it
+  noBtn.style.transform=`scale(${scale})`;
 
   const txt=[
    'Are you sure? 😢','Think again 🙄','No is illegal 🚫',
