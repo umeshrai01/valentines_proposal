@@ -48,7 +48,9 @@ h1{color:#e91e63;font-size:2.4em;margin-bottom:35px;animation:pulse 2s infinite;
 
 .btn-no{
   background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
-  color:white;position:absolute;transition:all .14s ease-out;
+  color:white;
+  position:relative; /* start beside Yes */
+  transition:all .14s ease-out;
 }
 
 .success-page{display:none;text-align:center;animation:cele 1s ease-out;}
@@ -114,15 +116,62 @@ for(let i=0;i<18;i++)setTimeout(createHeart,i*300);
 
 // NO BUTTON LOGIC (extra funny + mobile friendly)
 const noBtn=document.getElementById('noBtn');
+const yesBtn=document.querySelector('.btn-yes');
 let clicks=0,scale=1;
+
+// ---- INITIAL FIX: place No beside Yes and same size ----
+function initNoButton(){
+  const y=yesBtn.getBoundingClientRect();
+  const c=document.querySelector('.buttons-container').getBoundingClientRect();
+
+  // make same width as Yes
+  noBtn.style.width = y.width + 'px';
+
+  // move it just to the right side of Yes with gap
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = (y.width + 20) + 'px';
+  noBtn.style.top = '0px';
+}
+window.addEventListener('load', initNoButton);
+
+// -----------------------------------------
+
 
 function jumpNo(){
   const c=document.querySelector('.buttons-container');
   const cr=c.getBoundingClientRect();
   const br=noBtn.getBoundingClientRect();
+  const yes=document.querySelector('.btn-yes').getBoundingClientRect();
 
-  let x=Math.random()*(cr.width-br.width);
-  let y=Math.random()*(cr.height-br.height);
+  let x, y, safe = false;
+  let attempts = 0;
+
+  // keep generating positions until NOT above the YES button
+  while(!safe && attempts < 30){
+    x=Math.random()*(cr.width-br.width);
+    y=Math.random()*(cr.height-br.height);
+
+    const absX = cr.left + x;
+    const absY = cr.top + y;
+
+    // check overlap with YES button area
+    const overlapX = absX < yes.right && absX + br.width > yes.left;
+    const overlapY = absY < yes.bottom && absY + br.height > yes.top;
+
+    // also keep a small gap of 12px around YES
+    const nearYes = overlapX && overlapY;
+
+    if(!nearYes){
+      safe = true;
+    }
+    attempts++;
+  }
+
+  // if still unsafe after many tries → force to right side
+  if(!safe){
+    x = cr.width - br.width - 10;
+    y = Math.random()*(cr.height-br.height);
+  }
 
   noBtn.style.left=x+'px';
   noBtn.style.top=y+'px';
@@ -130,9 +179,21 @@ function jumpNo(){
 }
 
 function mobileNo(e){
-  e.preventDefault();clicks++;
-  scale-=.12;if(scale<.32)scale=.32;
-  noBtn.style.scale=scale;
+  e.preventDefault();
+  clicks++;
+
+  // shrink effect
+  scale -= .12;
+
+  // when too small → disappear forever 😆
+  if(scale <= .32){
+    noBtn.style.scale = .25;
+    noBtn.style.opacity = '0';
+    setTimeout(()=>{ noBtn.style.display='none'; },200);
+    return;
+  }
+
+  noBtn.style.scale = scale;
 
   const txt=[
    'Are you sure? 😢','Think again 🙄','No is illegal 🚫',
