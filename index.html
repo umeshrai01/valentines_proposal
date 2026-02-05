@@ -4,268 +4,261 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Simran 💖</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+
 body{
   font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-  overflow:hidden;
   background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
   min-height:100vh;
   display:flex;justify-content:center;align-items:center;
+  overflow:hidden;
 }
 
-.hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+/* Hearts */
+.hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
 .heart{position:absolute;font-size:22px;animation:float 8s infinite ease-in-out;opacity:.6;}
+
 @keyframes float{
-  0%{transform:translateY(100vh) rotate(0);opacity:0}
-  15%{opacity:.7}
-  90%{opacity:.7}
-  100%{transform:translateY(-120px) rotate(360deg);opacity:0}
+  0%{transform:translateY(100vh);opacity:0}
+  20%{opacity:.7}
+  100%{transform:translateY(-120px);opacity:0}
 }
 
+/* Box */
 .container{
-  position:relative;z-index:2;text-align:center;
+  position:relative;text-align:center;
   background:rgba(255,255,255,.96);
-  padding:55px 40px;border-radius:30px;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
-  max-width:620px;width:92%;animation:fadeIn .9s ease;
+  padding:40px 20px;border-radius:25px;
+  max-width:600px;width:94%;
 }
-@keyframes fadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
 
-h1{color:#e91e63;font-size:2.4em;margin-bottom:35px;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+h1{color:#e91e63;font-size:1.9em;margin-bottom:25px;}
 
-.buttons-container{display:flex;justify-content:center;gap:25px;margin-top:35px;position:relative;min-height:90px;}
+/* Buttons */
+.buttons-container{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  margin-top:25px;
+  position:relative;
+  min-height:70px;
+}
 
 .btn{
-  padding:18px 46px;font-size:1.4em;border:none;border-radius:15px;
-  cursor:pointer;font-weight:bold;transition:all .25s ease;
-  box-shadow:0 5px 15px rgba(0,0,0,.2);
+  padding:14px 32px;
+  font-size:1.2em;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:bold;
 }
 
-.btn-yes{background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);color:white;}
-.btn-yes:hover{transform:scale(1.12);box-shadow:0 8px 25px rgba(67,233,123,.6);}
+.btn-yes{background:#4ade80;color:white;}
 
+/* START NORMAL BESIDE YES */
 .btn-no{
-  background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+  background:#f472b6;
   color:white;
-  position:relative; /* start beside Yes */
-  transition:all .14s ease-out;
+  position:relative;
 }
 
-.success-page{display:none;text-align:center;animation:cele 1s ease-out;}
-@keyframes cele{0%{opacity:0;transform:scale(.5) rotate(-180deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+/* Success */
+.success-page{display:none;}
 
-.big-heart{font-size:5em;animation:beat 1.4s infinite;}
-@keyframes beat{0%,100%{transform:scale(1)}25%{transform:scale(1.25)}40%{transform:scale(1.1)}}
-
-.confetti{position:fixed;width:10px;height:10px;top:-10px;z-index:10;animation:fall 3s linear infinite;}
-@keyframes fall{to{transform:translateY(100vh) rotate(360deg)}}
-
-canvas{position:fixed;top:0;left:0;pointer-events:none;}
+.big-heart{font-size:4em;margin:10px;}
 
 .message-box{
-  background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);
-  padding:25px;border-radius:20px;margin-top:25px;
-  box-shadow:0 10px 30px rgba(0,0,0,.1);
+  background:#ffe4e6;
+  padding:15px;border-radius:15px;margin-top:15px;
+}
+
+/* Surprise */
+.surprise-btn{
+  margin-top:15px;
+  background:#fbcfe8;
+  color:#333;
+}
+
+.disclaimer{
+  display:none;
+  margin-top:15px;
+  background:#fff3cd;
+  padding:12px;
+  border-radius:12px;
+  min-height:60px;
+}
+
+/* Typing cursor */
+.cursor{
+  display:inline-block;
+  width:6px;height:14px;
+  background:#333;
+  animation:blink .8s infinite;
+}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Mobile tweaks */
+@media(max-width:480px){
+  h1{font-size:1.6em;}
+  .btn{padding:12px 24px;font-size:1.1em;}
 }
 </style>
 </head>
+
 <body>
 
 <audio id="bgMusic">
-  <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_2b7c6f0c3a.mp3?filename=romantic-114624.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_2b7c6f0c3a.mp3">
 </audio>
 
-<canvas id="fire"></canvas>
 <div class="hearts" id="hearts"></div>
 
+<!-- PAGE 1 -->
 <div class="container" id="proposalPage">
   <h1>Hello Simran, will you be my valentine? 💕</h1>
+
   <div class="buttons-container">
     <button class="btn btn-yes" onclick="acceptProposal()">Yes</button>
     <button class="btn btn-no" id="noBtn">No</button>
   </div>
 </div>
 
+<!-- PAGE 2 -->
 <div class="container success-page" id="successPage">
-  <h1>Yayyyy! ✨</h1>
+
+  <h1>Yayyyy Simmu! ✨</h1>
   <div class="big-heart">❤️</div>
+
   <div class="message-box">
-    <p><strong>You just made my day, Simran!</strong></p>
+    <p>You just made my day, Simmy! 🌹</p>
     <p>I promise to make this Valentine's Day unforgettable! 🌹</p>
-    <p>Lots of love, laughter and sweet surprises are loading... 🎉</p>
-    <p style="margin-top:15px;color:#e91e63;"><em>Can't wait to celebrate with you! 💖</em></p>
+    <p>Sweet surprises loading... 🎉</p>
   </div>
+
+  <button class="btn surprise-btn" onclick="startTyping()">
+    Surprise Ahead 🎁
+  </button>
+
+  <div id="disclaimerBox" class="disclaimer">
+    <span id="typeText"></span><span class="cursor"></span>
+  </div>
+
 </div>
 
 <script>
-// Floating hearts
+// HEARTS
 const heartsContainer=document.getElementById('hearts');
-const symbols=['❤️','💕','💖','💗','💝','💘','💓'];
+const symbols=['❤️','💕','💖','💗','💝'];
+
 function createHeart(){
-  const h=document.createElement('div');h.className='heart';
+  const h=document.createElement('div');
+  h.className='heart';
   h.textContent=symbols[Math.floor(Math.random()*symbols.length)];
   h.style.left=Math.random()*100+'%';
-  h.style.animationDuration=(Math.random()*5+5)+'s';
   heartsContainer.appendChild(h);
   setTimeout(()=>h.remove(),12000);
 }
-setInterval(createHeart,600);
-for(let i=0;i<18;i++)setTimeout(createHeart,i*300);
+setInterval(createHeart,700);
 
-// NO BUTTON LOGIC (extra funny + mobile friendly)
+// -------- NO BUTTON LOGIC (MOBILE FRIENDLY) --------
 const noBtn=document.getElementById('noBtn');
-const yesBtn=document.querySelector('.btn-yes');
-let clicks=0,scale=1;
+let clicks=0, scale=1;
+let noActivated=false;
 
-// ---- INITIAL FIX: place No beside Yes and same size ----
-function initNoButton(){
-  const y=yesBtn.getBoundingClientRect();
-  const c=document.querySelector('.buttons-container').getBoundingClientRect();
+// Activate floating only AFTER first touch
+function activateNoButton(){
+  if(noActivated) return;
 
-  // make same width as Yes
-  noBtn.style.width = y.width + 'px';
+  noBtn.style.position="absolute";
 
-  // move it just to the right side of Yes with gap
-  noBtn.style.position = 'absolute';
-  noBtn.style.left = (y.width + 20) + 'px';
-  noBtn.style.top = '0px';
+  const yes=document.querySelector('.btn-yes').getBoundingClientRect();
+  noBtn.style.left=(yes.width + 16)+"px";
+  noBtn.style.top="0px";
+
+  noActivated=true;
 }
-window.addEventListener('load', initNoButton);
-
-// -----------------------------------------
-
 
 function jumpNo(){
-  const c=document.querySelector('.buttons-container');
-  const cr=c.getBoundingClientRect();
-  const br=noBtn.getBoundingClientRect();
-  const yes=document.querySelector('.btn-yes').getBoundingClientRect();
+  const box=document.querySelector('.buttons-container').getBoundingClientRect();
 
-  let x, y, safe = false;
-  let attempts = 0;
-
-  // keep generating positions until NOT above the YES button
-  while(!safe && attempts < 30){
-    x=Math.random()*(cr.width-br.width);
-    y=Math.random()*(cr.height-br.height);
-
-    const absX = cr.left + x;
-    const absY = cr.top + y;
-
-    // check overlap with YES button area
-    const overlapX = absX < yes.right && absX + br.width > yes.left;
-    const overlapY = absY < yes.bottom && absY + br.height > yes.top;
-
-    // also keep a small gap of 12px around YES
-    const nearYes = overlapX && overlapY;
-
-    if(!nearYes){
-      safe = true;
-    }
-    attempts++;
-  }
-
-  // if still unsafe after many tries → force to right side
-  if(!safe){
-    x = cr.width - br.width - 10;
-    y = Math.random()*(cr.height-br.height);
-  }
-
-  noBtn.style.left=x+'px';
-  noBtn.style.top=y+'px';
-  noBtn.style.transform=`scale(${scale}) rotate(${Math.random()*26-13}deg)`;
+  noBtn.style.left=Math.random()*(box.width-80)+'px';
+  noBtn.style.top=Math.random()*50+'px';
 }
 
 function mobileNo(e){
   e.preventDefault();
   clicks++;
 
-  // shrink effect
-  scale -= .12;
-
-  // when too small → disappear forever 😆
-  // never disappear – just keep getting tinier forever
-  if(scale <= .05){
-    scale = .05; // minimum visible size but still alive
-  }
-
-  // apply shrink using transform so jumpNo doesn't reset it
-  noBtn.style.transform=`scale(${scale})`;
+  scale -= .1;
+  if(scale <= .06) scale = .06;
 
   const txt=[
-   'Are you sure? 😢','Think again 🙄','No is illegal 🚫',
-   'Don’t break my heart 💔','Plzzz 🥺','I’ll cry 😭','Wrong button 😆'
+   'Are you sure? 😢',
+   'Think again 🙄',
+   'No is illegal 🚫',
+   'Plzzz 🥺',
+   'I’ll cry 😭',
+   'Wrong button 😆',
+   'Try YES 👀',
+   'System says YES 🤖'
   ];
+
   noBtn.innerText=txt[Math.floor(Math.random()*txt.length)];
+  noBtn.style.transform=`scale(${scale})`;
 
   jumpNo();
 }
 
-noBtn.addEventListener('mouseenter',jumpNo);
-noBtn.addEventListener('mouseover',jumpNo);
-noBtn.addEventListener('touchstart',mobileNo);
-noBtn.addEventListener('click',mobileNo);
+// MOBILE FIRST EVENTS
+noBtn.addEventListener('touchstart',(e)=>{
+  activateNoButton();
+  mobileNo(e);
+});
+
+noBtn.addEventListener('click',(e)=>{
+  activateNoButton();
+  mobileNo(e);
+});
+
+// Desktop testing
+noBtn.addEventListener('mouseenter',()=>{
+  activateNoButton();
+  jumpNo();
+});
 
 // ACCEPT
 function acceptProposal(){
   document.getElementById('proposalPage').style.display='none';
   document.getElementById('successPage').style.display='block';
   document.getElementById('bgMusic').play();
-  createConfetti();startFireworks();
 }
 
-// CONFETTI
-function createConfetti(){
-  const colors=['#ff6b6b','#4ecdc4','#45b7d1','#f7dc6f','#bb8fce','#f8b500'];
-  for(let i=0;i<160;i++){
-    setTimeout(()=>{
-      const c=document.createElement('div');c.className='confetti';
-      c.style.left=Math.random()*100+'%';
-      c.style.background=colors[Math.floor(Math.random()*colors.length)];
-      c.style.animationDuration=(Math.random()*2+2)+'s';
-      document.body.appendChild(c);
-      setTimeout(()=>c.remove(),5000);
-    },i*20);
+// -------- TYPING ANIMATION --------
+const message =
+"😄 Bass mazak kar raha tha!!!! Seriously mat lena.\n" +
+"You survived the legendary NO button torture 😂\n" +
+"Just wanted to make you smile, officially propose ni kiya maine (abhi tak 👀).";
+
+let i=0;
+
+function startTyping(){
+  document.getElementById('disclaimerBox').style.display='block';
+  typeWriter();
+}
+
+function typeWriter(){
+  const box=document.getElementById('typeText');
+
+  if(i < message.length){
+    box.innerHTML += message.charAt(i);
+    i++;
+    setTimeout(typeWriter, 38);
   }
 }
-
-// FIREWORKS CANVAS
-const canvas=document.getElementById('fire');
-const ctx=canvas.getContext('2d');
-canvas.width=innerWidth;canvas.height=innerHeight;
-let parts=[];
-
-function boom(x,y){
- for(let i=0;i<70;i++){
-  parts.push({
-   x,y,
-   vx:(Math.random()-0.5)*9,
-   vy:(Math.random()-0.5)*9,
-   size:Math.random()*4+2,
-   life:90
-  });
- }
-}
-
-function startFireworks(){
- setInterval(()=>boom(Math.random()*canvas.width,Math.random()*canvas.height),700);
- requestAnimationFrame(draw);
-}
-
-function draw(){
- ctx.clearRect(0,0,canvas.width,canvas.height);
- parts.forEach(p=>{
-  p.x+=p.vx;p.y+=p.vy;p.life--;
-  ctx.fillStyle=`hsl(${Math.random()*360},100%,65%)`;
-  ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
- });
- parts=parts.filter(p=>p.life>0);
- requestAnimationFrame(draw);
-}
-
-window.onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;};
 </script>
+
 </body>
 </html>
