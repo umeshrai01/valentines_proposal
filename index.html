@@ -18,46 +18,43 @@ body{
 
 /* Hearts */
 .hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
-.heart{position:absolute;font-size:22px;animation:float 8s infinite ease-in-out;opacity:.6;}
+.heart{position:absolute;font-size:22px;animation:float 8s infinite ease-in-out;}
 
 @keyframes float{
   0%{transform:translateY(100vh);opacity:0}
-  20%{opacity:.7}
   100%{transform:translateY(-120px);opacity:0}
 }
 
-/* Box */
+/* Main Box */
 .container{
   position:relative;text-align:center;
   background:rgba(255,255,255,.96);
-  padding:40px 20px;border-radius:25px;
+  padding:35px 18px;border-radius:25px;
   max-width:600px;width:94%;
 }
 
-h1{color:#e91e63;font-size:1.9em;margin-bottom:25px;}
+h1{color:#e91e63;font-size:1.8em;margin-bottom:20px;}
 
-/* Buttons */
 .buttons-container{
   display:flex;
   justify-content:center;
   gap:16px;
-  margin-top:25px;
+  margin-top:20px;
   position:relative;
   min-height:70px;
 }
 
 .btn{
-  padding:14px 32px;
+  padding:14px 30px;
   font-size:1.2em;
   border:none;
   border-radius:14px;
   cursor:pointer;
-  font-weight:bold;
 }
 
 .btn-yes{background:#4ade80;color:white;}
 
-/* START NORMAL BESIDE YES */
+/* start normal */
 .btn-no{
   background:#f472b6;
   color:white;
@@ -67,30 +64,57 @@ h1{color:#e91e63;font-size:1.9em;margin-bottom:25px;}
 /* Success */
 .success-page{display:none;}
 
-.big-heart{font-size:4em;margin:10px;}
-
 .message-box{
   background:#ffe4e6;
-  padding:15px;border-radius:15px;margin-top:15px;
+  padding:12px;border-radius:15px;margin-top:10px;
 }
 
 /* Surprise */
 .surprise-btn{
-  margin-top:15px;
+  margin-top:12px;
   background:#fbcfe8;
-  color:#333;
 }
 
+/* ----- POOP SECTION ----- */
+.poop-screen{
+  display:none;
+  font-size:160px;        /* BIG HALF SCREEN POOP */
+  text-align:center;
+  margin-top:5px;
+  animation:pop .6s ease;
+}
+
+@keyframes pop{
+  0%{transform:scale(.2) rotate(-20deg);}
+  70%{transform:scale(1.2) rotate(10deg);}
+  100%{transform:scale(1);}
+}
+
+/* Falling poop pieces */
+.falling-poop{
+  position:fixed;
+  top:-60px;
+  font-size:34px;
+  animation:poopFall linear infinite;
+  z-index:999;
+}
+
+@keyframes poopFall{
+  to{
+    transform:translateY(110vh) rotate(360deg);
+  }
+}
+
+/* Typing */
 .disclaimer{
   display:none;
-  margin-top:15px;
+  margin-top:12px;
   background:#fff3cd;
   padding:12px;
   border-radius:12px;
   min-height:60px;
 }
 
-/* Typing cursor */
 .cursor{
   display:inline-block;
   width:6px;height:14px;
@@ -100,10 +124,9 @@ h1{color:#e91e63;font-size:1.9em;margin-bottom:25px;}
 
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* Mobile tweaks */
 @media(max-width:480px){
-  h1{font-size:1.6em;}
-  .btn{padding:12px 24px;font-size:1.1em;}
+  h1{font-size:1.5em;}
+  .poop-screen{font-size:130px;}
 }
 </style>
 </head>
@@ -129,18 +152,22 @@ h1{color:#e91e63;font-size:1.9em;margin-bottom:25px;}
 <!-- PAGE 2 -->
 <div class="container success-page" id="successPage">
 
-  <h1>Yayyyy Simmu! ✨</h1>
-  <div class="big-heart">❤️</div>
+  <h1>Yayyyy! ✨</h1>
 
   <div class="message-box">
-    <p>You just made my day, Simmy! 🌹</p>
+    <p>You just made my day, Simran! 🌹</p>
     <p>I promise to make this Valentine's Day unforgettable! 🌹</p>
     <p>Sweet surprises loading... 🎉</p>
   </div>
 
-  <button class="btn surprise-btn" onclick="startTyping()">
+  <button class="btn surprise-btn" onclick="showPoopPrank()">
     Surprise Ahead 🎁
   </button>
+
+  <!-- BIG POOP -->
+  <div id="poopBox" class="poop-screen">
+    💩
+  </div>
 
   <div id="disclaimerBox" class="disclaimer">
     <span id="typeText"></span><span class="cursor"></span>
@@ -151,109 +178,99 @@ h1{color:#e91e63;font-size:1.9em;margin-bottom:25px;}
 <script>
 // HEARTS
 const heartsContainer=document.getElementById('hearts');
-const symbols=['❤️','💕','💖','💗','💝'];
+const symbols=['❤️','💕','💖','💗'];
 
-function createHeart(){
+setInterval(()=>{
   const h=document.createElement('div');
   h.className='heart';
   h.textContent=symbols[Math.floor(Math.random()*symbols.length)];
   h.style.left=Math.random()*100+'%';
   heartsContainer.appendChild(h);
   setTimeout(()=>h.remove(),12000);
-}
-setInterval(createHeart,700);
+},700);
 
-// -------- NO BUTTON LOGIC (MOBILE FRIENDLY) --------
+// ----- NO BUTTON LOGIC -----
 const noBtn=document.getElementById('noBtn');
-let clicks=0, scale=1;
-let noActivated=false;
+let scale=1, noActivated=false;
 
-// Activate floating only AFTER first touch
-function activateNoButton(){
+function activateNo(){
   if(noActivated) return;
-
   noBtn.style.position="absolute";
-
-  const yes=document.querySelector('.btn-yes').getBoundingClientRect();
-  noBtn.style.left=(yes.width + 16)+"px";
-  noBtn.style.top="0px";
-
+  noBtn.style.left="120px";
   noActivated=true;
 }
 
 function jumpNo(){
-  const box=document.querySelector('.buttons-container').getBoundingClientRect();
-
-  noBtn.style.left=Math.random()*(box.width-80)+'px';
+  noBtn.style.left=Math.random()*200+'px';
   noBtn.style.top=Math.random()*50+'px';
 }
 
 function mobileNo(e){
   e.preventDefault();
-  clicks++;
-
-  scale -= .1;
-  if(scale <= .06) scale = .06;
+  scale-=.1; if(scale<.06) scale=.06;
 
   const txt=[
    'Are you sure? 😢',
-   'Think again 🙄',
    'No is illegal 🚫',
    'Plzzz 🥺',
    'I’ll cry 😭',
    'Wrong button 😆',
-   'Try YES 👀',
-   'System says YES 🤖'
+   'Try YES 👀'
   ];
 
   noBtn.innerText=txt[Math.floor(Math.random()*txt.length)];
   noBtn.style.transform=`scale(${scale})`;
-
   jumpNo();
 }
 
-// MOBILE FIRST EVENTS
-noBtn.addEventListener('touchstart',(e)=>{
-  activateNoButton();
-  mobileNo(e);
-});
-
-noBtn.addEventListener('click',(e)=>{
-  activateNoButton();
-  mobileNo(e);
-});
-
-// Desktop testing
-noBtn.addEventListener('mouseenter',()=>{
-  activateNoButton();
-  jumpNo();
-});
+noBtn.addEventListener('touchstart',(e)=>{activateNo();mobileNo(e);});
+noBtn.addEventListener('click',(e)=>{activateNo();mobileNo(e);});
+noBtn.addEventListener('mouseenter',()=>{activateNo();jumpNo();});
 
 // ACCEPT
 function acceptProposal(){
-  document.getElementById('proposalPage').style.display='none';
-  document.getElementById('successPage').style.display='block';
+  proposalPage.style.display='none';
+  successPage.style.display='block';
   document.getElementById('bgMusic').play();
 }
 
-// -------- TYPING ANIMATION --------
-const message =
-" Shakal dekhi h apni\n" +
-"Or nahi to tujhe propose karunga😂\n" +
-"Ye glti jeevan me kabhi ni karne wala.";
+// -------- POOP PRANK + FALLING --------
+const prankMsg =
+"🎉 Mubarak ho, Aapke sath prank hua hai😂\n" +
+"and this poop is the final boss 💩\n" +
+"But you smiled… mission success 😄";
 
 let i=0;
 
-function startTyping(){
-  document.getElementById('disclaimerBox').style.display='block';
-  typeWriter();
+function createFallingPoop(){
+  const p=document.createElement('div');
+  p.className='falling-poop';
+  p.textContent='💩';
+  p.style.left=Math.random()*100+'%';
+  p.style.animationDuration=(Math.random()*2+2)+'s';
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),4000);
+}
+
+function showPoopPrank(){
+  // BIG POOP
+  document.getElementById('poopBox').style.display='block';
+
+  // START FALLING POOP RAIN
+  setInterval(createFallingPoop,250);
+
+  // start typing
+  setTimeout(()=>{
+     document.getElementById('disclaimerBox').style.display='block';
+     typeWriter();
+  },800);
 }
 
 function typeWriter(){
   const box=document.getElementById('typeText');
 
-  if(i < message.length){
-    box.innerHTML += message.charAt(i);
+  if(i < prankMsg.length){
+    box.innerHTML += prankMsg.charAt(i);
     i++;
     setTimeout(typeWriter, 38);
   }
